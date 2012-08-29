@@ -7,3 +7,6 @@ irtrating.pl
   
 screen_away.pl
   - Modified screen_away.pl to also logout from facebook in bitlbee
+  
+tilanne.pl
+  - parses new situations from www.peto-media.fi
