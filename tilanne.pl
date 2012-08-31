@@ -14,6 +14,7 @@ my %IRSSI = (
     url => 'none', );
 my $timeout = 60000;
 my $last_time = "29.08.2012 10:22:41";
+# lisää virheen hanskausta kaikkialle
 open(FILE, '.petotime');
 while (<FILE>) {
   chomp;
@@ -37,7 +38,11 @@ foreach my $line (@lines) {
     my $time = encode("utf-8", ($haly[2]->content_list)[0]);
     my $place = encode("utf-8", ($haly[0]->content_list)[0]);
     my $thing = encode("utf-8", ($haly[1]->content_list)[0]);
-    if (($last_time cmp $time) != 1 && ($last_time ne $time)) {
+    # muuta pattern variableksi
+    $place =~ /.*?(Pori).*/i;
+    if (($last_time cmp $time) != 1 && ($last_time ne $time) && $1) {
+      $place =~ /(\D+?)\//i;
+      $place = $1;
       $time =~ /(\d\d)\:(\d\d)\:(\d\d)/;
       unshift(@halyt, "$1:$2 || $place || $thing");
       if (($latest cmp $time) != 1) {
@@ -47,6 +52,7 @@ foreach my $line (@lines) {
   }
 }
 foreach my $haly (@halyt) {
+  # Muokkaa tähän minne haluat tiedotteiden tulevan
   Irssi::print($haly);
 }
 $last_time = $latest;
